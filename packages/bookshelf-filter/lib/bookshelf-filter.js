@@ -23,7 +23,9 @@ const filter = function filter(Bookshelf) {
          * Method which makes the necessary query builder calls (through knex) for the filters set on this model
          * instance.
          */
-        applyDefaultAndCustomFilters: function applyDefaultAndCustomFilters(options) {
+        applyDefaultAndCustomFilters: function applyDefaultAndCustomFilters(
+            options
+        ) {
             const nql = require('@tryghost/nql');
 
             const expansions = [];
@@ -50,6 +52,12 @@ const filter = function filter(Bookshelf) {
                 } else {
                     custom = extra;
                 }
+            }
+            if (custom) {
+                custom = custom.replace(
+                    /authors:(.)($|\+|\))/,
+                    'authors:\'$1\'$2'
+                );
             }
 
             try {
